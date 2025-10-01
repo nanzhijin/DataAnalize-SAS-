@@ -22,10 +22,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # 保持最新
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4 # 保持最新
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
@@ -36,15 +36,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      # 更新以下三个Actions的版本
+      # 使用最新版本
       - name: Setup Pages
-        uses: actions/configure-pages@v4 # 从v3更新到v4
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3 # 从v2更新到v3
-        with:
-          path: ./dist # 确保这是您项目正确的构建输出路径
+        uses: actions/upload-pages-artifact@v3
 
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4 # 从v2更新到v4
+        uses: actions/deploy-pages@v4
