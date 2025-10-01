@@ -1,0 +1,60 @@
+name: Deploy to GitHub Pages # 工作流的名称，会显示在 Actions 标签页里
+
+# 定义触发条件：当代码推送到 main 分支时触发这个工作流
+on:
+  push:
+    branches: [ "main" ]
+
+# 设置授予工作流的权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 允许一个并发部署
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+# 开始定义具体任务
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # 在一个最新的 Ubuntu 系统环境中运行
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # 步骤 1: 获取您的代码
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步骤 2: 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # 指定 Node.js 版本，请确保与您的项目兼容
+          cache: 'npm'
+
+      # 步骤 3: 安装依赖
+      - name: Install dependencies
+        run: npm ci # 或使用 npm install
+
+      # 步骤 4: 构建项目（生成静态文件）
+      - name: Build
+        run: npm run build # 这个脚本必须您在 package.json 的 scripts 里定义好了
+
+      # 步骤 5: 设置 Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      # 步骤 6: 上传构建好的文件
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./dist # 关键！请修改为您的构建输出目录（常见的有：dist, build, out, .next/static）
+
+      # 步骤 7: 部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
