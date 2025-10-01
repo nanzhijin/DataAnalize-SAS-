@@ -10,13 +10,13 @@ interface FileItem {
 }
 const files = ref<FileItem[]>([])
 // const files = ref([])
+
 const loading = ref(true)
 const error = ref('')
-const API_URL = import.meta.env.VITE_API_URL;
 
 onMounted(() => {
   const token = sessionStorage.getItem('token')
-  fetch(`${API_URL}/file-list`, {
+  fetch('http://localhost:3000/api/file-list', {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => res.json())
