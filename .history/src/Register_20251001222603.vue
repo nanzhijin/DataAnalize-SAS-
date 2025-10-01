@@ -24,7 +24,7 @@ function handleRegister() {
     error.value = '两次密码不一致'
     return
   }
-    fetch(`${API_URL}/api/register`, {
+  fetch(`${API_URL}/api/register`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username: username.value, password: password.value })
