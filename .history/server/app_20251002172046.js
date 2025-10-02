@@ -9,17 +9,20 @@ const app = express()
 
 app.use(bodyParser.json())
 
-// 全局 use + options 配置CORS
 // 只保留带配置的 cors
+/*
 app.use(cors({
   origin: 'https://nanzhijin.github.io',
   credentials: true
 }))
+*/
+
 // 加一条全局OPTIONS路由，确保CORS头在预检时返回
 app.options('*', cors({
   origin: 'https://nanzhijin.github.io',
   credentials: true
-}))
+}));
+
 
 app.use('/api', authRouter)
 app.use('/api', uploadRouter)
@@ -29,10 +32,10 @@ app.get('/', (req, res) => {
   res.send('Backend is running!')
 })
 
-module.exports = app;
-// const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3001;
 /* 因为Vercel不能用app.listen，所以注释掉
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 })
 */
+module.exports = app;
