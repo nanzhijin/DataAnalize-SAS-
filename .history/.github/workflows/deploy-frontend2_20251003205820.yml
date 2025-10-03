@@ -37,7 +37,6 @@ jobs:
         run: npm run build
         env:
           GITHUB_PAGES: "true"
-          VITE_API_URL: "https://data-analize-sas.vercel.app"
 
       # 使用最新版本
       - name: Setup Pages
